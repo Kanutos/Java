@@ -1,35 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ejercicio017;
 
-
-import java.applet.Applet;
 import java.awt.Color;
-import java.awt.Event;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 
-/**
- *
- * @author alberto
- */
-public class Marcianitos extends Applet implements Runnable {
+public class Marcianitos extends JFrame implements Runnable,KeyListener, MouseListener {
    
     int velocidad = 10;
     Thread animacion;
     Image imagen; 
     Graphics noseve;
-    
     Gun arma;
     Nave nave;
-    List<Bala> balas = new ArrayList<Bala>();
-    List<Nave> naves = new ArrayList<Nave>();
-    List<Bomba> bombas = new ArrayList<Bomba>();
+    List<Bala> balas = new ArrayList<>();
+    List<Nave> naves = new ArrayList<>();
+    List<Bomba> bombas = new ArrayList<>();
     int cronometro = 0;
     int score;
     int scoreMax;
@@ -39,17 +32,27 @@ public class Marcianitos extends Applet implements Runnable {
     boolean gameOver = false;
     boolean win = false;
     
-    public void init(){
+   public static void main(String arg[]){
+     Marcianitos app = new Marcianitos();
+    }
+    public Marcianitos(){
+        init();
+        start();
+    }   
+    public final void init(){
+        pack();
+        setSize(600, 600);
+        setVisible(true);
         score = 0;
         scoreMax = 0;
-        this.setSize(600, 600);
         arma = new Gun();
         iniciarNaves();
         imagen = this.createImage(600, 600); 
         noseve = imagen.getGraphics(); 
     }
-    public void start(){
+    public final void start(){
         animacion = new Thread(this);
+        animacion.start();
     }
     
     public void paint(Graphics g){
@@ -74,9 +77,9 @@ public class Marcianitos extends Applet implements Runnable {
             scoreMax = score;
         score = 0;
         arma = new Gun();
-        naves = new ArrayList<Nave>();
-        bombas = new ArrayList<Bomba>();
-        balas = new ArrayList<Bala>();
+        naves = new ArrayList<>();
+        bombas = new ArrayList<>();
+        balas = new ArrayList<>();
         iniciarNaves();
         this.setSize(600, 600);
         imagen = this.createImage(600, 600); 
@@ -86,7 +89,7 @@ public class Marcianitos extends Applet implements Runnable {
         if(!animacion.isAlive())
             animacion.start();
         else
-            animacion.resume();
+            animacion.interrupt();
     }
     private void paintGameOver() {
         if(gameOver){
@@ -130,13 +133,13 @@ public class Marcianitos extends Applet implements Runnable {
     private void gameOver() {
           gameOver = true;
           repaint();
-          animacion.suspend();
+          animacion.interrupt();
     }
     
     private void win() {
           win = true;
           repaint();
-          animacion.suspend();
+          animacion.interrupt();
     }
 
     private void tituloInicio() {
@@ -244,7 +247,7 @@ public class Marcianitos extends Applet implements Runnable {
                     naves.add(new Nave(2*j +1 ,i));
             }
     }
-    public boolean mouseDown(Event ev, int x, int y){
+    public boolean mouseDown(MouseEvent ev, int x, int y){
        if((!win || !gameOver ) && balas.size()<cartuchos){
            balas.add(new Bala(x));
            return true;
@@ -253,13 +256,13 @@ public class Marcianitos extends Applet implements Runnable {
          
     }
     
-    public boolean mouseMove(Event ev, int x, int y){
+    public boolean mouseMove(MouseEvent ev, int x, int y){
         arma.setX(x - arma.arma.width/2);
         
         return true;
     }
     
-    public boolean keyDown(Event ev, int tecla){
+    public boolean keyDown(KeyEvent ev, int tecla){
        if(!win || !gameOver){
         if(tecla == 1006)
             arma.update(1);
@@ -278,6 +281,64 @@ public class Marcianitos extends Applet implements Runnable {
         }
        }
         return false;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+           if(!win || !gameOver){
+        if(e.getKeyCode() == 1006)
+            arma.update(1);
+        if(e.getKeyCode() == 1007)
+            arma.update(-1);
+        
+        if(e.getKeyCode() == 32){//barra espaciadora
+            if((!win || !gameOver) && balas.size()<cartuchos){
+                balas.add(new Bala((int)(arma.canon.getX())+ arma.canon.width/2));
+                return;
+            }
+        }
+        if(e.getKeyCode() == 10){
+             startNewGame();
+             return;
+        }
+    }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        
+        if((!win || !gameOver ) && balas.size()<cartuchos){
+           balas.add(new Bala(e.getX()));
+    }
+    }
+    @Override
+    public void mousePressed(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+       
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        arma.setX(e.getX() - arma.arma.width/2);
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+      
     }
 }    
 

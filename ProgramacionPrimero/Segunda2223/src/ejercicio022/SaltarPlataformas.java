@@ -5,18 +5,18 @@
  */
 package ejercicio022;
 
-
-import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Event;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 
 
-public class SaltarPlataformas extends Applet implements Runnable{
+public class SaltarPlataformas extends JFrame implements Runnable{
     public static final int DELAY = 20;
     public static final int TIEMPOMIN = 800;
     public static final int TIEMPOMAX = 2000;
@@ -24,7 +24,7 @@ public class SaltarPlataformas extends Applet implements Runnable{
     Thread animacion;
     Image imagen; 
     Graphics noseve;
-    List<Platform> plataformas = new ArrayList<Platform>();
+    List<Platform> plataformas = new ArrayList<>();
     private static int TAM_X = 600;
     private static int TAM_Y = 600;
     int timer = 0;
@@ -34,7 +34,17 @@ public class SaltarPlataformas extends Applet implements Runnable{
     Platform plataforma1;
     Mario mario;
     
-    public void init(){
+    public static void main(String arg[]){
+        SaltarPlataformas app = new SaltarPlataformas();
+    }
+    public SaltarPlataformas(){
+        init();
+        start();
+    }
+       
+    final public void init(){
+        pack();
+        setVisible(true);
         this.setSize(TAM_X, TAM_Y);
         mario = new Mario();
         plataforma1 = new Platform(250, 50, 120);
@@ -44,8 +54,9 @@ public class SaltarPlataformas extends Applet implements Runnable{
         score = 0;
         scoreMax = 0;
     }
-    public void start(){
+   final public void start(){
         animacion = new Thread(this);
+        animacion.start();
     }
     
     public void paint(Graphics g){
@@ -74,7 +85,7 @@ public class SaltarPlataformas extends Applet implements Runnable{
             }
         }while(true);
     }
-    public boolean keyDown(Event ev, int tecla){
+    public boolean keyDown(KeyEvent ev, int tecla){
        if(!gameOver && tecla == 32 ){//barra espaciadora
            mario.saltar();   
            return true;
@@ -93,7 +104,7 @@ public class SaltarPlataformas extends Applet implements Runnable{
             scoreMax = score;
         score = 0;
         mario = new Mario();
-        plataformas = new ArrayList<Platform>();
+        plataformas = new ArrayList<>();
         plataforma1 = new Platform(250, 50, 120);
         plataformas.add(plataforma1);
         gameOver = false;
@@ -101,7 +112,7 @@ public class SaltarPlataformas extends Applet implements Runnable{
         if(!animacion.isAlive())
             animacion.start();  
         else
-            animacion.resume();
+            animacion.interrupt();
     }
     private void tituloInicio() {
         if(!animacion.isAlive()){
@@ -179,7 +190,7 @@ public class SaltarPlataformas extends Applet implements Runnable{
             noseve.setColor(Color.WHITE);
             noseve.drawString("GAME OVER ", 220, 300);
             noseve.drawString("Para reiniciar pulsa ENTER", 170, 325);
-            animacion.suspend();
+            animacion.interrupt();
         }
     }
     

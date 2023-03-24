@@ -5,20 +5,16 @@
  */
 package ejercicio014;
 
-import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Event;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 
-
-/**
- *
- * @author alber
- */
-public class Jugando extends Applet implements Runnable {
+public class Jugando extends JFrame implements Runnable {
+    
     public static final int NUM_PEL = 5;
     int velocidad = 30;
     Thread animacion;
@@ -33,22 +29,30 @@ public class Jugando extends Applet implements Runnable {
     
     Esto no hace falta porque lo hacemos con el metodo constructor de la pelota
     */
-    
-    public void init(){
+    public static void main(String arg[]){
+        Jugando app = new Jugando();
+    }
+    public Jugando(){
+        init();
+        start();
+    }
+   final public void init(){
+        pack();
+        setSize(600, 600);
+        setVisible(true);
         pelotas = new ArrayList<Pelota>(); //pelotas es un array de pelotas
-        this.setSize(400, 400);
         for(int i = 0; i<NUM_PEL; i++)
             pelotas.add(new Pelota()); //añado las pelotas a la lista
         imagen = this.createImage(400, 400); //no llamo al constructor, llamo a un método que llamará a un método constructor.
         noseve = imagen.getGraphics(); //obtenemos el objeto graphics del objeto imagen y lo guardamos en noseve   
     }
-    public void start(){
+    final public void start(){
         animacion = new Thread(this);//lo instanciamos y le pasamos this (el frame)
         animacion.start();//es el que llama a ejecutar el método run
     }
     
     public void paint(Graphics g){
-       noseve.setColor(Color.BLACK);
+       noseve.setColor(Color.white);
        noseve.fillRect(0, 0, 400, 400);
        for(int i = 0; i < pelotas.size(); i++) //pinto todos los elementos de la lista
            pelotas.get(i).paint(noseve);

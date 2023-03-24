@@ -22,8 +22,8 @@ public class Bird extends Rectangle {
         this.height = RADIO;
         this.width = RADIO;
        
-        
     }
+    
     public void paint(Graphics gg){
         int[] xPoints = {x + width, x + width, x + width +10};
         int[] yPoints = {y+6+RADIO/2,y-6+RADIO/2,y+RADIO/2};

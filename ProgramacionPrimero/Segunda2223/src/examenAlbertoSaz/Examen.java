@@ -1,57 +1,37 @@
-/*
-Realizar el juego que “una” los rectángulos inmóviles, 
-situados en la parte inferior de la pantalla, 
-con los rectángulos móviles que circulan por su parte superior.  
-Siguiendo los siguientes pasos:
-
-Crear una clase para los rectángulos inmóviles de la parte inferior.  1 punto
-
-Crear una clase para los rectángulos móviles de la parte superior.  1 punto
-
-Crear una clase para las líneas que unirán los rectángulos inmóviles 
-con los móviles.  1 punto
-
-De cada una de estas clases, deberás crear una lista en el programa principal y 
-resolver correctamente cuando cargas sus elementos, cómo se actualizan,
-cómo interactúan… 2 puntos
-
-Las líneas adquirirán el color del rectángulo inmóvil sobre el que se 
-haga click. 0,5 puntos
-
-Las líneas se irán pintando mientras el botón izquierdo del ratón permanezca 
-pulsado, siempre y cuando se haya hecho click sobre un 
-rectángulo inmóvil previamente.  2 puntos
-
-Al soltar el ratón sobre un rectángulo móvil del mismo color,
-la línea permanecerá unida a este y 
-continuará redibujándose según la trayectoria que este siga.  
-Si no se suelta el ratón sobre un rectángulo móvil del mismo color, 
-la línea desaparece.  2,5 puntos*/
-
 package examenAlbertoSaz;
 
-import java.applet.Applet;
+
 import java.awt.Color;
 import java.awt.Event;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 
 
-public class Examen extends Applet implements Runnable {
+public class Examen extends JFrame implements Runnable {
     int delay = 20;
     Thread animacion;
     Image imagen; 
     Graphics noseve;
     Color [] colores = {Color.RED, Color.ORANGE, Color.GREEN, Color.YELLOW, Color.MAGENTA};
-    List<CuadradoInferior> cuadradosAbajo = new ArrayList<CuadradoInferior>();
-    List<CuadradoMovil> cuadradosArriba = new ArrayList<CuadradoMovil>();
-    List<DosPuntos> lineas = new ArrayList<DosPuntos>();
+    List<CuadradoInferior> cuadradosAbajo = new ArrayList<>();
+    List<CuadradoMovil> cuadradosArriba = new ArrayList<>();
+    List<DosPuntos> lineas = new ArrayList<>();
     DosPuntos actual;
     
-    public void init(){
-        
+     public static void main(String arg[]){
+       Examen juego = new Examen();
+    }
+    public Examen(){
+        init();
+        start();
+    }
+    final public void init(){
+        pack();
+        setSize(800, 600);
+        setVisible(true);
         for(int i = 0; i < colores.length; i++)
             cuadradosAbajo.add(new CuadradoInferior(i, colores[i]));
         for(int i = 0; i < colores.length; i++)
@@ -62,13 +42,10 @@ public class Examen extends Applet implements Runnable {
         noseve = imagen.getGraphics();
         
     }
-    
-    
-    public void start(){
+
+    final public void start(){
         animacion = new Thread(this);//lo instanciamos y le pasamos this (el frame)
-        animacion.start();//es el que llama a ejecutar el método run
-        
-        
+        animacion.start();//es el que llama a ejecutar el método run      
     }
     public void paint(Graphics g){
        noseve.setColor(Color.BLACK);
@@ -102,10 +79,8 @@ public class Examen extends Applet implements Runnable {
             if(!lineas.isEmpty())    
                 for(DosPuntos li : lineas){
                     li.update();
-                }
-                
+                }              
             }
-          
             repaint();
             try {
                 Thread.sleep(delay);
@@ -121,8 +96,7 @@ public class Examen extends Applet implements Runnable {
                return true;
            }
         }
-        
-        
+  
         return false;
     }
     public boolean mouseDrag(Event ev, int x, int y){//cuando haces click y sin soltar, mueves

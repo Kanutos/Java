@@ -5,7 +5,6 @@
  */
 package ejercicio020;
 
-import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Event;
 import java.awt.Font;
@@ -13,10 +12,11 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 
 
 
-public class JugarPelota extends Applet implements Runnable {
+public class JugarPelota extends JFrame implements Runnable {
      static final int VELOCIDAD = 20;
     Thread animacion;
     Image imagen; 
@@ -30,17 +30,23 @@ public class JugarPelota extends Applet implements Runnable {
     int segundos = 0;
     int minutos = 0;
     
+public static void main(String arg[]){
+        JugarPelota app = new JugarPelota();
+    }
+    public JugarPelota(){
+         pack();
+        setSize(600, 600);
+        setVisible(true);
     
-    
-    public void init(){
+    //public void init(){
         this.setSize(TAM_X, TAM_Y);
         pelotas = new ArrayList<Pelota>();
         pelota = new Pelota();
         pelotas.add(pelota);
         imagen = this.createImage(TAM_X, TAM_Y);
         noseve = imagen.getGraphics(); 
-    }
-    public void start(){
+    
+    //public void start(){
         animacion = new Thread(this);//lo instanciamos y le pasamos this (el frame)
         animacion.start();//es el que llama a ejecutar el método run
     }

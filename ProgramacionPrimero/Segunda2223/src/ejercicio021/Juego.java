@@ -5,8 +5,6 @@
  */
 package ejercicio021;
 
-
-import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Event;
 import java.awt.Font;
@@ -14,10 +12,10 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 
 
-
-public class Juego extends Applet implements Runnable {
+public class Juego extends JFrame implements Runnable {
     public static final int DELAY = 20;
     public static final int TIEMPOMIN = 800;
     public static final int TIEMPOMAX = 2000;
@@ -36,10 +34,16 @@ public class Juego extends Applet implements Runnable {
     int scoreMax;
     Piedras piedra1;
     
+    public static void main(String arg[]){
+        Juego app = new Juego();
+    }
+    public Juego(){
+         pack();
+        setSize(600, 600);
+        setVisible(true);
     
-    
-    
-    public void init(){
+
+    //public void init(){
         this.setSize(TAM_X, TAM_Y);
         dino = new DinosaurioChrome();
         piedras.add(new Piedras());
@@ -47,8 +51,8 @@ public class Juego extends Applet implements Runnable {
         noseve = imagen.getGraphics();
         score = 0;
         scoreMax = 0;
-    }
-    public void start(){
+    
+    //public void start(){
         animacion = new Thread(this);
     }
     
@@ -116,7 +120,7 @@ casos no vamos a notar diferencia, pero puede que sea útil en otras ocasiones*/
         if(!animacion.isAlive())
             animacion.start();  
         else
-            animacion.resume();
+            animacion.interrupt();
     }
     private void tituloInicio() {
         if(!animacion.isAlive()){
@@ -198,7 +202,7 @@ casos no vamos a notar diferencia, pero puede que sea útil en otras ocasiones*/
             noseve.setColor(Color.WHITE);
             noseve.drawString("GAME OVER ", 220, 300);
             noseve.drawString("Para reiniciar pulsa ENTER", 170, 325);
-            animacion.suspend();
+            animacion.interrupt();
         }
     }
 
@@ -210,6 +214,4 @@ casos no vamos a notar diferencia, pero puede que sea útil en otras ocasiones*/
         return TAM_Y;
     }
 
-   
-    
 }

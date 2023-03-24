@@ -5,7 +5,6 @@
  */
 package ejercicio018;
 
-import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Event;
 import java.awt.Font;
@@ -13,9 +12,10 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 
 
-public class FroggyCrossTheRoad extends Applet implements Runnable{
+public class FroggyCrossTheRoad extends JFrame implements Runnable{
     int velocidad = 10;
     Thread animacion;
     Image imagen; 
@@ -24,22 +24,31 @@ public class FroggyCrossTheRoad extends Applet implements Runnable{
     boolean gameOver = false;
     boolean win = false;
     boolean jugando;
-    List<Coche> coches = new ArrayList<Coche>();
+    List<Coche> coches = new ArrayList<>();
     int cantidadCoches = 100;
     int score;
     int scoreMax;
     
-    
+   public static void main(String arg[]){
+       FroggyCrossTheRoad app = new FroggyCrossTheRoad();
+    }
+    public FroggyCrossTheRoad(){
+        init();
+        start();
+    }
     public void init(){
         score = 0;
         scoreMax = 0;
-        this.setSize(600, 600);
+        pack();
+        setSize(600, 600);
+        setVisible(true);
         imagen = this.createImage(600, 600); 
         noseve = imagen.getGraphics(); 
         rana = new Rana();
     }
     public void start(){
         animacion = new Thread(this);
+         animacion.start();
     }
     
      public void paint(Graphics g){
@@ -92,7 +101,7 @@ public class FroggyCrossTheRoad extends Applet implements Runnable{
         if(!animacion.isAlive())
             animacion.start();  
         else
-            animacion.resume();
+            animacion.interrupt();
     }
     private void tituloInicio() {
         if(!animacion.isAlive()){
@@ -190,7 +199,7 @@ public class FroggyCrossTheRoad extends Applet implements Runnable{
     private void win() {
         win = true;
         repaint();
-        animacion.suspend();
+        animacion.interrupt();
     }
     private void paintWin() {
         if(win){

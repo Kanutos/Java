@@ -1,21 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ejercicio019;
 
-import java.applet.Applet;
+
 import java.awt.Color;
 import java.awt.Event;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import static javafx.scene.paint.Color.rgb;
+import javax.swing.JFrame;
 
 
-
-public class Pong extends Applet implements Runnable {
+public class Pong extends JFrame implements Runnable {
     final int VELOCIDADINICIAL = 20;
     int velocidad;
     Thread animacion;
@@ -28,24 +23,29 @@ public class Pong extends Applet implements Runnable {
     final int ABAJO = 1;
     boolean fin = false;
     
-    public void init(){
+     public static void main(String arg[]){
+       Pong app = new Pong();
+    }
+     
+    public Pong(){
+        init();
+        start();
+    }
+        
+    final public void init(){
         pelota = new Pelota(Color.WHITE);
         raqueta1 = new Raqueta(1);
         raqueta2 = new Raqueta(2);
-        
-        this.setSize(800, 600);
-       
+        pack();
+        setSize(800, 600);
+        setVisible(true);
         imagen = this.createImage(800, 600); 
         noseve = imagen.getGraphics();
-        
-    }
-    
-    
-    public void start(){
+    }  
+    final public void start(){
         animacion = new Thread(this);//lo instanciamos y le pasamos this (el frame)
-        //animacion.start();//es el que llama a ejecutar el método run
-        
-        
+        animacion.start();//es el que llama a ejecutar el método run
+ 
     }
     
     public void paint(Graphics g){
@@ -169,8 +169,8 @@ public class Pong extends Applet implements Runnable {
     }
     private void fin() {
         if(fin){
-            noseve.setFont(new Font("Arial", Font.BOLD, 22));
-            if(score1 > score2){
+            noseve.setFont(new Font("Arial", Font.BOLD, 22));// fuente, tipo de letra y tamaño
+            if(score1 > score2){// si score
                 noseve.setColor(Color.BLACK);
                 noseve.drawString("NADAL", 364, 249);
                 noseve.drawString("GANA", 364, 349);

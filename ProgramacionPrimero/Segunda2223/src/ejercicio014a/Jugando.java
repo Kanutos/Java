@@ -5,11 +5,12 @@
  */
 package ejercicio014a;
 
-import java.applet.Applet;
+
 import java.awt.*;
+import javax.swing.JFrame;
 
 
-public class Jugando extends Applet implements Runnable {
+public class Jugando extends JFrame implements Runnable {
     int velocidad = 5;
     Thread animacion;
     Image imagen; 
@@ -22,9 +23,15 @@ public class Jugando extends Applet implements Runnable {
     
     Pelota[] pelota; 
     
+    public static void main(String arg[]){
+        Jugando app = new Jugando();
+    }
+    public Jugando(){
+         pack();
+        setSize(600, 600);
+        setVisible(true);
     
-    
-    public void init(){
+    //public void init(){
         this.setSize(tamX, tamY);
         pelota = new Pelota[numPelotas];
         for(int i = 0; i < numPelotas; i++)
@@ -36,8 +43,8 @@ public class Jugando extends Applet implements Runnable {
                                     (int) (Math.random()*3));
         imagen = this.createImage(tamX, tamY);//no llamo al constructor, llamo a un método que llamará a un método constructor.
         noseve = imagen.getGraphics(); //obtenemos el objeto graphics del objeto imagen y lo guardamos en noseve   
-    }
-    public void start(){
+    
+    //public void start(){
         animacion = new Thread(this);//lo instanciamos y le pasamos this (el frame)
         animacion.start();//es el que llama a ejecutar el método run
     }

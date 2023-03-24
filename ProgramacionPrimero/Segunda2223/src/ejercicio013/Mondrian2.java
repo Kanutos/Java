@@ -3,13 +3,13 @@ vamos a pintar un cuadro de Mondrian y luego le vamos a dar movimiento.
  */
 package ejercicio013;
 
-import java.applet.Applet; 
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import javax.swing.JFrame;
 
-
-public class Mondrian2 extends Applet implements Runnable{
+public class Mondrian2 extends JFrame implements Runnable{
     int velocidad = 10;
     Thread animacion;
     Image imagen; 
@@ -22,9 +22,14 @@ public class Mondrian2 extends Applet implements Runnable{
     int [] altura =     {90, 190, 120, 90, 80, 90, 45, 200, 135};
     Color [] color =    {Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.BLUE, Color.BLUE, Color.LIGHT_GRAY, Color.RED, Color.RED, Color.MAGENTA};  
 
-    
-    
-    public void init(){
+    public static void main( String arg[]){
+     Mondrian2 App = new Mondrian2();
+    }
+    public Mondrian2(){
+        pack();
+        setSize(600, 600);
+        setVisible(true);   
+    //public void init(){
         this.setSize(320, 350);
         numeroRectangulos = 9;
         rectangulo = new Rectangulo[numeroRectangulos];
@@ -32,11 +37,7 @@ public class Mondrian2 extends Applet implements Runnable{
         noseve = imagen.getGraphics(); //obtenemos el objeto graphics del objeto imagen y lo guardamos en noseve
         for(int i = 0; i < numeroRectangulos; i++)
             rectangulo[i] = new Rectangulo(posX[i], posY[i], anchura[i], altura[i], color[i]);
-        
-        
-        
-    }
-    public void start(){
+ 
         animacion = new Thread(this);//lo instanciamos y le pasamos this (el frame)
         animacion.start();//es el que llama a ejecutar el método run
         

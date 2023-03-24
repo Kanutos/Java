@@ -1,24 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ejercicio016;
 
-import java.applet.Applet;
+
 import java.awt.Color;
 import java.awt.Event;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 
-/**
- *
- * @author alber
- */
-public class FlappyBird extends Applet implements Runnable {
+public class FlappyBird extends JFrame implements Runnable {
    
     int velocidad = 10;
     Thread animacion;
@@ -30,7 +25,21 @@ public class FlappyBird extends Applet implements Runnable {
     int score;
     int scoreMax;
     
-    public void init(){
+     public static void main(String arg[]){
+     FlappyBird app = new FlappyBird();
+    }
+     
+    public FlappyBird(){
+         super("Arkanoid");
+            init();
+            start();
+    }
+    
+        public void init(){
+            pack();
+            setSize(600, 600);
+            setVisible(true);
+ 
         score = 0;
         scoreMax = 0;
         pajaro = new Bird();
@@ -40,10 +49,10 @@ public class FlappyBird extends Applet implements Runnable {
         
         imagen = this.createImage(600, 600); 
         noseve = imagen.getGraphics(); 
-    }
-    public void start(){
-        animacion = new Thread(this);//lo instanciamos y le pasamos this (el frame)
-        //animacion.start();//es el que llama a ejecutar el método run
+        }
+        public void start() {
+            animacion = new Thread(this);//lo instanciamos y le pasamos this (el frame)
+            animacion.start();//es el que llama a ejecutar el método run
     }
     
     public void paint(Graphics g){
@@ -122,7 +131,7 @@ public class FlappyBird extends Applet implements Runnable {
                     pajaro.intersects(co.getBocaAbajo())){
                 pajaro.velY = 0;
                 repaint();
-                animacion.suspend();
+                animacion.interrupt();
                break;
            
             }
@@ -142,7 +151,7 @@ public class FlappyBird extends Applet implements Runnable {
         if(!animacion.isAlive())
             animacion.start();
         else
-            animacion.resume();
+            animacion.interrupt();
         if(scoreMax < score)
             scoreMax = score;
         score = 0;
@@ -157,7 +166,7 @@ public class FlappyBird extends Applet implements Runnable {
         
         
     }
-    public boolean mouseDown(Event ev, int x, int y){
+    public boolean mouseDown(Event ev, int x, int y){//MIRA EL MOUSELISTENER
        if(animacion.isAlive()){
            pajaro.saltar();
            return true;
@@ -176,7 +185,8 @@ public class FlappyBird extends Applet implements Runnable {
             return true;
            
        }
-       
        return false;
     }
 }
+       
+

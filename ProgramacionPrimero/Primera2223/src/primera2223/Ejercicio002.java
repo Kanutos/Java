@@ -25,6 +25,5 @@ public class Ejercicio002 {
             /*lo rojo es un error de compilación, le falta un if o poner llaves
            Para el finde: hacer comparación de dos números, decir cual es el mayor y si son dos igual que lo diga*/
            System.out.println("El mayor es; " + y);
-    }
-    
+    }   
 }

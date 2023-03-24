@@ -5,10 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-/**
- *
- * @author alberto
- */
 public class CuadradoMovil extends Rectangle{
     Color color;
      static final int ANCHURA = 50;

@@ -3,7 +3,6 @@ vamos a pintar un cuadro de Mondrian y luego le vamos a dar movimiento.
  */
 package ejercicio013;
 
-import java.applet.Applet; 
 import java.awt.Color;
 
 /* es como una ventana que se puede meter dentro de una página web
@@ -17,9 +16,10 @@ paint:
 */
 import java.awt.Graphics;
 import java.awt.Image;
+import javax.swing.JFrame;
 
 
-public class Mondrian extends Applet implements Runnable{
+public class Mondrian extends JFrame implements Runnable{
     int posX = 80;
     int posY = 100;
     int velocidad = 0;
@@ -37,16 +37,18 @@ public class Mondrian extends Applet implements Runnable{
     y cuando lo tenemos dibujado, pintamos encima el objeto imagen
     no se llega a borrar lo que hay por lo que no parpadeará
     */
-    
-    
-    public void init(){
+    public static void main( String arg[]){
+        Mondrian App = new Mondrian();
+    }
+    public Mondrian(){
+      pack();
+        setSize(600, 600);
+        setVisible(true);   
+    //public void init(){
         this.setSize(320, 350);
         direccion = DERECHA;
         imagen = this.createImage(320, 350); //no llamo al constructor, llamo a un método que llamará a un método constructor.
         noseve = imagen.getGraphics(); //obtenemos el objeto graphics del objeto imagen y lo guardamos en noseve
-        
-    }
-    public void start(){
         animacion = new Thread(this);//lo instanciamos y le pasamos this (el frame)
         animacion.start();//es el que llama a ejecutar el método run
         

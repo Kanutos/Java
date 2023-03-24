@@ -3,10 +3,6 @@
  */
 package primera2223;
 
-/**
- *
- * @author alber
- */
 public class Ejercicio007 {
      public static void main(String arg[]){
          int x, y, inter;
@@ -17,9 +13,9 @@ public class Ejercicio007 {
              inter = y;
              y = x;
              x = inter;
-             /* Si y es mayor que x, lo que hago es que y pase a memoria intermedia,
-             para guardarlos, el hueco de y lo relleno con la x y luego lo que 
-             tengo guardado en el inter se lo pongo a x; de este modo siempre 
+             /* Si y es mayor que 'x', lo que hago es que 'y' pase a memoria intermedia,
+             para guardarlos, el hueco de 'y' lo relleno con la 'x' y luego lo que 
+             tengo guardado en el 'inter' se lo pongo a 'x'; de este modo siempre 
              el primer número será el mayor*/
          }//Cuando llegamos a este punto, siempre la x será mayor que y
          if((x % y) == 0)  

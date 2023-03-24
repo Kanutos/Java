@@ -12,95 +12,109 @@ Clases: -pelota: similar a la anterior: x, y, dam, velocidad en X y en Y
  */
 package ejercicio015;
 
-import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Event;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 
+public class Arkanoid extends JFrame implements Runnable {
 
-public class Arkanoid extends Applet implements Runnable {
     int velocidad;
     Thread animacion;
-    Image imagen; 
+    Image imagen;
     Graphics noseve;
     Pelota pelota;
-    List<Ladrillo> ladrillos = new ArrayList<Ladrillo>();
-    Color [] colores = {Color.BLUE, Color.CYAN, Color.GREEN, Color.YELLOW, Color.LIGHT_GRAY};
+    List<Ladrillo> ladrillos = new ArrayList<>();
+    Color[] colores = {Color.BLUE, Color.CYAN, Color.GREEN, Color.YELLOW, Color.LIGHT_GRAY};
     Raqueta raqueta;
     int score;
     final int IZQUIERDA = -1;
     final int DERECHA = 1;
-    List<Bonus> bonus = new ArrayList<Bonus>();
-    
-    public void init(){
+    List<Bonus> bonus = new ArrayList<>();
+
+    public static void main(String arg[]) {
+        Arkanoid patata = new Arkanoid();
+    }
+
+    public Arkanoid() {
+        super(" Arkanoid");
+        init();
+        start();
+    }
+
+   final public void init() {
+        pack();
+        setSize(600, 600);
+        setVisible(true);
         pelota = new Pelota(Color.WHITE);
-        for(int i = 0; i < 5; i++)
-            for(int j = 0; j < 10; j++)
-                ladrillos.add(new Ladrillo(j*(Ladrillo.ANCHURA+4)+1, i*30+1, colores[i]));
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 10; j++) {
+                ladrillos.add(new Ladrillo(j * (Ladrillo.ANCHURA + 4) + 1, i * 30 + 1, colores[i]));
+            }
+        }
         raqueta = new Raqueta();
-        
-        this.setSize(600, 600);
-       
-        imagen = this.createImage(600, 600); 
+        imagen = this.createImage(600, 600);
         noseve = imagen.getGraphics();
-        
     }
-    
-    
-    public void start(){
+
+   final  public void start() {
         animacion = new Thread(this);//lo instanciamos y le pasamos this (el frame)
-        //animacion.start();//es el que llama a ejecutar el método run
-        
-        
+        animacion.start();//es el que llama a ejecutar el método run
+
     }
-    
-    public void paint(Graphics g){
-       noseve.setColor(Color.BLACK);
-       noseve.fillRect(0, 0, 600, 600);
-       pelota.paint(noseve);
-       if(!animacion.isAlive()){
+
+    public void paint(Graphics g) {
+        noseve.setColor(Color.BLACK);
+        noseve.fillRect(0, 0, 600, 600);
+        pelota.paint(noseve);
+        if (!animacion.isAlive()) {
             noseve.setColor(Color.WHITE);
             noseve.drawString("Para jugar pulsa", 235, 450);
             noseve.drawString("la barra espaciadora", 230, 475);
-       }
-       for(Ladrillo ld : ladrillos)
-           ld.paint(noseve);
-       
-       raqueta.paint(noseve);
-       
-       if(!bonus.isEmpty())
-           for(Bonus bon : bonus)
-               bon.paint(noseve);
+        }
+        for (Ladrillo ld : ladrillos) {
+            ld.paint(noseve);
+        }
 
-       if(pelota.y >= 600){
-                noseve.setColor(Color.WHITE);
-                noseve.drawString("GAME OVER", 260, 300);
-                noseve.drawString("SCORE: " + String.valueOf(score), 270, 340);
-                noseve.drawString("Para volver a jugar pulsa", 215, 450);
-                noseve.drawString("la barra espaciadora", 230, 475);
-                animacion.interrupt();
-       }
-       if(ladrillos.isEmpty()){
-                noseve.setColor(Color.WHITE);
-                noseve.drawString("YOU WIN", 260, 300);
-                noseve.drawString("SCORE: " + String.valueOf(score), 260, 340);
-                pelota.x = 280;
-                pelota.y = 250;
-                animacion.interrupt();
-       }
-        if(animacion.isAlive()){
-       
-       noseve.setColor(Color.WHITE);
-       noseve.drawString("Score: " + String.valueOf(score), 10, 575);
-       }
-        
-       g.drawImage(imagen, 0, 0, this);
+        raqueta.paint(noseve);
+
+        if (!bonus.isEmpty()) {
+            for (Bonus bon : bonus) {
+                bon.paint(noseve);
+            }
+        }
+
+        if (pelota.y >= 600) {
+            noseve.setColor(Color.WHITE);
+            noseve.drawString("GAME OVER", 260, 300);
+            noseve.drawString("SCORE: " + String.valueOf(score), 270, 340);
+            noseve.drawString("Para volver a jugar pulsa", 215, 450);
+            noseve.drawString("la barra espaciadora", 230, 475);
+            animacion.interrupt();
+        }
+        if (ladrillos.isEmpty()) {
+            noseve.setColor(Color.WHITE);
+            noseve.drawString("YOU WIN", 260, 300);
+            noseve.drawString("SCORE: " + String.valueOf(score), 260, 340);
+            pelota.x = 280;
+            pelota.y = 250;
+            animacion.interrupt();
+        }
+        if (animacion.isAlive()) {
+
+            noseve.setColor(Color.WHITE);
+            noseve.drawString("Score: " + String.valueOf(score), 10, 575);
+        }
+
+        g.drawImage(imagen, 0, 0, this);
     }
-    
-    public void update(Graphics g){ //override, lo sobreescribimos eliminando la linea de borrar
+
+    public void update(Graphics g) { //override, lo sobreescribimos eliminando la linea de borrar
         paint(g);
     }
     
@@ -222,35 +236,43 @@ public class Arkanoid extends Applet implements Runnable {
         imagen = this.createImage(600, 600); 
         noseve = imagen.getGraphics();  
     }
-    public boolean keyDown(Event ev, int tecla){
+      public boolean keyDown(Event ev, int tecla){
+        if(tecla == 1006)
+            raqueta.update(IZQUIERDA);
+        if(tecla == 1007)
+            raqueta.update(DERECHA);
+        if(tecla == 27)
+            System.exit(0);
+        return true;
+      }
+}
+   /* public boolean keyDown(KeyEvent ev, int tecla){
        //método para mover la raqueta con las teclas 1006 izda y 1007 dcha
-       if(ev.key == 1006 && raqueta.x > 0){
+       if(ev.getKeyCode() == 1006 && raqueta.x > 0){
            raqueta.update(IZQUIERDA);
            return true;
        }
-       if(ev.key == 1007 && raqueta.x < 600 - raqueta.width){
+       if(ev.getKeyCode() == 1007 && raqueta.x < 600 - raqueta.width){
            raqueta.update(DERECHA);
            return true;
        }
-       if(ev.key == 32){//barra espaciadora
+       if(ev.getKeyCode()== 32){//barra espaciadora
            //if(animacion.isInterrupted())
            startNewGame();
            return true;
        }
-       if(ev.key == 84){//T de trampa
+       if(ev.getKeyCode()== 84){//T de trampa
            hacerTrampa();
            return true;
        }
            
         return false;
     }
-    public boolean mouseMove(Event ev, int x, int y){
+    public boolean mouseMove(MouseEvent ev, int x, int y){
         raqueta.x = x - raqueta.width/2;
         
         return true;
-    }
-
+    }*/
     
-}
     
 
